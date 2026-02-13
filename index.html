@@ -2,157 +2,176 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Valentine 💘</title>
+
+  <!-- Love-letter fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg: url("https://media.giphy.com/media/KZoFWq3X8t5S1OzDCv/giphy.gif");
-      --txt: #1b1b1b;
-      --glass: rgba(255,255,255,.65);
+      --bg: url("https://media.giphy.com/media/KZoFWq3X8t5S1OzDCv/giphy.gif"); /* windy trees */
+      --txt: #121212;
+      --glass: rgba(255,255,255,.70);
       --glass2: rgba(255,255,255,.35);
+      --shadow: 0 18px 55px rgba(0,0,0,.22);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: "Cormorant Garamond", Georgia, serif; /* love-letter body font */
       color:var(--txt);
       overflow:hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* GIF background */
+    /* ===== GIF background ===== */
     .bg{
       position:fixed; inset:0;
       background-image: var(--bg);
       background-size: cover;
       background-position:center;
-      transform: scale(1.04);
+      transform: scale(1.06);
       filter: saturate(1.05) contrast(1.03);
     }
     .vignette{
       position:fixed; inset:0;
       background:
-        radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.25), rgba(255,255,255,0) 60%),
-        linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.10));
+        radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.22), rgba(255,255,255,0) 60%),
+        linear-gradient(to bottom, rgba(0,0,0,.22), rgba(0,0,0,.10));
       pointer-events:none;
     }
 
-    /* floating clouds (only in spring mode) */
-    .clouds{position:fixed; inset:0; pointer-events:none; opacity:0; transition:opacity .6s ease}
+    /* ===== Spring-only clouds ===== */
+    .clouds{position:fixed; inset:0; pointer-events:none; opacity:0; transition:opacity .55s ease}
     body.spring .clouds{opacity:1}
     .cloud{
       position:absolute;
       width:280px; height:90px;
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.88);
       border-radius: 999px;
-      filter: blur(.2px);
       box-shadow: 0 12px 35px rgba(0,0,0,.12);
       animation: drift linear infinite;
     }
     .cloud:before,.cloud:after{
       content:"";
       position:absolute;
-      background: rgba(255,255,255,.9);
+      background: rgba(255,255,255,.92);
       border-radius:999px;
     }
     .cloud:before{width:120px;height:120px; left:30px; top:-55px}
     .cloud:after{width:150px;height:150px; left:120px; top:-75px}
-    @keyframes drift{
-      from{transform:translateX(-35vw)}
-      to{transform:translateX(135vw)}
-    }
-    .c1{top:10%; left:-35vw; animation-duration:55s}
-    .c2{top:26%; left:-55vw; width:340px; height:105px; animation-duration:70s; opacity:.85}
-    .c3{top:44%; left:-45vw; width:220px; height:72px; animation-duration:60s; opacity:.75}
+    @keyframes drift{ from{transform:translateX(-40vw)} to{transform:translateX(140vw)} }
+    .c1{top:10%; left:-40vw; animation-duration:55s}
+    .c2{top:26%; left:-60vw; width:340px; height:105px; animation-duration:70s; opacity:.85}
+    .c3{top:44%; left:-50vw; width:220px; height:72px; animation-duration:60s; opacity:.75}
 
-    /* stage */
+    /* ===== Floating hearts layer ===== */
+    #floatLayer{
+      position:fixed; inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:5;
+    }
+    .float{
+      position:absolute;
+      font-size: 22px;
+      animation: rise linear forwards;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+      will-change: transform, opacity;
+    }
+    @keyframes rise{
+      from{transform: translateY(12px) scale(.95); opacity:0}
+      10%{opacity:1}
+      to{transform: translateY(-120vh) scale(1.2); opacity:0}
+    }
+
+    /* ===== Layout ===== */
     .wrap{
       position:relative;
       height:100%;
       display:grid;
       place-items:center;
       padding:18px;
+      z-index:2;
     }
 
-    /* “not a bland box” blob panel */
+    /* Not a bland box: cute blob glass panel */
     .panel{
-      width:min(860px, 94vw);
-      padding:22px 22px 18px;
+      width:min(900px, 94vw);
+      padding:18px 18px 16px;
       background: linear-gradient(135deg, var(--glass), var(--glass2));
-      border: 1px solid rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.58);
       border-radius: 42px 56px 48px 60px;
-      box-shadow: 0 18px 55px rgba(0,0,0,.22);
-      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(9px);
       position:relative;
       overflow:hidden;
     }
     .panel:before{
       content:"";
-      position:absolute; inset:-80px -120px auto auto;
-      width:260px; height:260px;
+      position:absolute; inset:-90px -130px auto auto;
+      width:280px; height:280px;
       background: radial-gradient(circle at 30% 30%, rgba(255,192,203,.65), rgba(255,255,255,0) 60%);
-      transform: rotate(15deg);
+      transform: rotate(14deg);
       pointer-events:none;
     }
 
     .top{
       display:flex;
-      gap:18px;
+      gap:16px;
       align-items:center;
       justify-content:center;
       flex-wrap:wrap;
     }
 
     .gifBubble{
-      width:min(240px, 62vw);
+      width:min(250px, 70vw);
       aspect-ratio: 1 / 1;
       border-radius: 36px;
       overflow:hidden;
       box-shadow: 0 14px 35px rgba(0,0,0,.18);
-      border: 1px solid rgba(255,255,255,.55);
-      transform: rotate(-1.5deg);
-      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.60);
+      transform: rotate(-1.2deg);
+      background: rgba(255,255,255,.20);
+      flex: 0 0 auto;
     }
     .gifBubble img{
-      width:100%;
-      height:100%;
+      width:100%; height:100%;
       object-fit:cover;
       display:block;
     }
 
     .copy{
       text-align:center;
-      padding: 6px 8px;
-      min-width:min(420px, 90vw);
+      padding: 6px 6px;
+      max-width: 520px;
+      flex: 1 1 320px;
     }
-    .nameTag{
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      justify-content:center;
-      padding:10px 14px;
-      border-radius:999px;
-      background: rgba(255,255,255,.55);
-      border: 1px solid rgba(255,255,255,.65);
-      box-shadow: 0 10px 25px rgba(0,0,0,.12);
-      font-weight:700;
-      letter-spacing:.2px;
-    }
+
+    /* Love-letter headline font */
     .q{
-      margin:14px 0 10px;
-      font-size: clamp(22px, 4.2vw, 40px);
-      line-height:1.08;
-      font-weight: 900;
+      margin:10px 0 10px;
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(26px, 5.2vw, 52px);
+      line-height:1.05;
+      font-weight: 700;
       text-shadow: 0 2px 14px rgba(255,255,255,.35);
     }
     .hint{
-      margin:0 0 14px;
-      opacity:.85;
-      font-weight:600;
+      margin:0 0 12px;
+      opacity:.92;
+      font-weight:700;
+      font-size: 18px;
     }
+    .hint:empty{ display:none; }
 
-    /* cute choices (not bland) */
+    /* Sticker-like buttons (not bland) */
     .choices{
       display:flex;
       gap:14px;
@@ -160,7 +179,6 @@
       flex-wrap:wrap;
       padding: 6px 0 2px;
     }
-
     .choice{
       border:0;
       background: transparent;
@@ -168,36 +186,38 @@
       padding:0;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      font-family: inherit;
     }
 
     .sticker{
       position:relative;
-      width: 200px;
-      height: 74px;
+      width: 210px;
+      height: 76px;
       display:grid;
       place-items:center;
       border-radius: 999px;
       box-shadow: 0 14px 35px rgba(0,0,0,.18);
-      transform: translateZ(0);
       transition: transform .12s ease, filter .12s ease;
-      border: 1px solid rgba(255,255,255,.7);
+      border: 1px solid rgba(255,255,255,.75);
       overflow:hidden;
     }
-    .sticker .label{
-      font-weight: 1000;
+    .label{
+      font-weight: 800;
       letter-spacing: .6px;
       font-size: 20px;
       display:flex;
       align-items:center;
       gap:10px;
     }
-    .sticker small{display:block; font-weight:700; opacity:.9; margin-top:2px}
+    .subLabel{display:block; font-weight:700; opacity:.9; margin-top:2px; font-size:12px}
 
-    .choice:hover .sticker{transform: translateY(-2px) rotate(-.3deg); filter:brightness(1.02)}
+    .choice:hover .sticker{transform: translateY(-2px) rotate(-.2deg); filter:brightness(1.02)}
     .choice:active .sticker{transform: translateY(1px) scale(.99)}
 
     .yes .sticker{
       background: linear-gradient(135deg, #ffd1e8, #fff1b8);
+      animation: pulse 1.35s ease-in-out infinite;
     }
     .yes .sticker:before{
       content:"";
@@ -206,57 +226,33 @@
       background: radial-gradient(circle at 30% 30%, rgba(255,105,180,.55), rgba(255,255,255,0) 62%);
       transform: rotate(10deg);
     }
-    .yes .sticker{animation: pulse 1.4s ease-in-out infinite}
-    @keyframes pulse{
-      0%,100%{transform: translateY(0)}
-      50%{transform: translateY(-2px)}
-    }
+    @keyframes pulse{ 0%,100%{transform: translateY(0)} 50%{transform: translateY(-2px)} }
 
     .no .sticker{
       background: linear-gradient(135deg, #d7f2ff, #e9e3ff);
-      animation: wobble 2.2s ease-in-out infinite;
       width: 170px;
-      height: 66px;
-      opacity:.95;
+      height: 68px;
+      opacity:.96;
+      animation: wobble 2.2s ease-in-out infinite;
     }
-    @keyframes wobble{
-      0%,100%{transform: rotate(.2deg)}
-      50%{transform: rotate(-.35deg)}
-    }
+    @keyframes wobble{ 0%,100%{transform: rotate(.2deg)} 50%{transform: rotate(-.35deg)} }
 
-    /* floating hearts layer */
-    #floatLayer{
-      position:fixed; inset:0;
-      pointer-events:none;
-      overflow:hidden;
-    }
-    .float{
-      position:absolute;
-      font-size: 22px;
-      animation: rise linear forwards;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
-    }
-    @keyframes rise{
-      from{transform: translateY(12px) scale(.95); opacity:0}
-      10%{opacity:1}
-      to{transform: translateY(-120vh) scale(1.2); opacity:0}
-    }
-
-    /* confirm + forever popup */
+    /* ===== Overlays ===== */
     .overlay{
       position:fixed; inset:0;
       display:none;
       place-items:center;
       background: rgba(0,0,0,.35);
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(7px);
       z-index:50;
       padding:18px;
     }
     .overlay.show{display:grid}
+
     .modal{
       width:min(520px, 94vw);
-      background: rgba(255,255,255,.82);
-      border:1px solid rgba(255,255,255,.65);
+      background: rgba(255,255,255,.84);
+      border:1px solid rgba(255,255,255,.66);
       border-radius: 28px;
       box-shadow: 0 25px 70px rgba(0,0,0,.25);
       padding:18px 18px 14px;
@@ -272,26 +268,194 @@
       transform: rotate(18deg);
       pointer-events:none;
     }
-    .modal h2{margin:6px 0 6px; font-size: 26px}
-    .modal p{margin:0 0 14px; font-weight:650; opacity:.9}
-    .modal .row{
-      display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
-    }
+    .modal h2{margin:6px 0 6px; font-size: 26px; font-weight: 800}
+    .modal p{margin:0 0 14px; font-weight:700; opacity:.92; font-size:18px}
+    .row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
     .miniBtn{
       border:0;
       cursor:pointer;
-      padding:12px 14px;
+      padding:12px 16px;
       border-radius: 999px;
-      font-weight:900;
+      font-weight:800;
       box-shadow: 0 12px 26px rgba(0,0,0,.14);
-      border: 1px solid rgba(255,255,255,.7);
+      border: 1px solid rgba(255,255,255,.75);
       background: linear-gradient(135deg, #ffe0f1, #fff6c8);
+      touch-action: manipulation;
+      font-family: inherit;
+      font-size: 18px;
     }
     .miniBtn.alt{
       background: linear-gradient(135deg, #d7f2ff, #efe9ff);
     }
 
-    /* explosion mode */
+    /* ===== Heart-shaped bigger S&T popup (throbbing + readable text) ===== */
+    @keyframes throb {
+      0%,100% { transform: rotate(-45deg) scale(1); }
+      50%     { transform: rotate(-45deg) scale(1.045); }
+    }
+
+    .heartModal{
+      --hs: min(620px, 92vw);          /* bigger */
+      width: var(--hs);
+      height: var(--hs);
+      background: linear-gradient(135deg, #ff1f5a, #ff4d8d);
+      border: 1px solid rgba(255,255,255,.32);
+      box-shadow: 0 30px 95px rgba(255,0,70,.38);
+      border-radius: 26px;
+      padding:0;
+      transform: rotate(-45deg);
+      overflow: visible;
+      position: relative;
+      isolation: isolate;
+      animation: throb 1.05s ease-in-out infinite; /* heart throb */
+    }
+
+    .heartModal:before{
+      content:"";
+      position:absolute;
+      width: var(--hs);
+      height: var(--hs);
+      left:0;
+      top:-50%;
+      background: inherit;
+      border-radius: 50%;
+      pointer-events:none;
+      z-index:0;
+    }
+    .heartModal:after{
+      content:"";
+      position:absolute;
+      width: var(--hs);
+      height: var(--hs);
+      left:50%;
+      top:0;
+      background: inherit;
+      border-radius: 50%;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .heartInner{
+      position:absolute;
+      inset:0;
+      transform: rotate(45deg);
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding: 74px 34px 44px;
+      color:#fff;
+      z-index:1;
+    }
+
+    /* readability booster */
+    .heartCard{
+      width:min(420px, 86vw);
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 26px;
+      padding: 18px 18px 16px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.18);
+      backdrop-filter: blur(6px);
+    }
+
+    .heartInner h2{
+      margin:0 0 8px;
+      font-family: "Dancing Script", cursive;
+      text-shadow: 0 10px 30px rgba(0,0,0,.25);
+      line-height: 1;
+    }
+    .stBig{
+      display:block;
+      font-size: clamp(50px, 10vw, 84px); /* bigger S&T */
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+    .stSmall{
+      display:block;
+      margin-top: 2px;
+      font-size: clamp(28px, 6.2vw, 44px); /* smaller Forever */
+      font-weight: 700;
+      opacity: .98;
+    }
+
+    .heartInner p{
+      margin:0 0 14px;
+      font-weight:700;
+      opacity:.98;
+      font-size: clamp(16px, 3.4vw, 20px);
+      text-shadow: 0 10px 26px rgba(0,0,0,.22);
+    }
+    .heartInner .miniBtn{
+      background: rgba(255,255,255,.92);
+      color:#ff1f5a;
+      border: 1px solid rgba(255,255,255,.78);
+      box-shadow: 0 18px 40px rgba(0,0,0,.18);
+      padding: 14px 22px;
+      font-size: 18px;
+    }
+
+    @media (max-width: 520px){
+      .heartModal{ --hs: min(520px, 94vw); }
+      .heartInner{ padding: 66px 26px 38px; }
+      .heartCard{ padding: 16px 14px 14px; }
+    }
+
+    /* ===== Love screen ===== */
+    .loveScreen{
+      position:fixed; inset:0;
+      display:none;
+      place-items:center;
+      z-index:40;
+      padding:18px;
+      text-align:center;
+    }
+    body.love .loveScreen{display:grid}
+    body.love .panel{display:none}
+
+    .loveCard{
+      width:min(560px, 92vw);
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(255,255,255,.65);
+      border-radius: 36px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.22);
+      backdrop-filter: blur(8px);
+      padding:16px 16px 14px;
+      overflow:hidden;
+      position:relative;
+    }
+    .loveCard:before{
+      content:"";
+      position:absolute; inset:-80px auto auto -90px;
+      width:260px; height:260px;
+      background: radial-gradient(circle at 40% 40%, rgba(255,192,203,.75), rgba(255,255,255,0) 62%);
+      transform: rotate(-10deg);
+      pointer-events:none;
+    }
+    .loveGif{
+      width:min(340px, 82vw);
+      aspect-ratio: 1/1;
+      margin:0 auto 10px;
+      border-radius: 34px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.7);
+      box-shadow: 0 14px 40px rgba(0,0,0,.16);
+      background: rgba(255,255,255,.2);
+    }
+    .loveGif img{width:100%;height:100%;object-fit:cover;display:block}
+    .loveTitle{
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(34px, 7vw, 60px);
+      margin:6px 0 4px;
+      font-weight: 700;
+    }
+    .loveSub{
+      margin:0;
+      font-weight:700;
+      opacity:.9;
+      font-size: 18px;
+    }
+
+    /* ===== Doom mode (kept intact) ===== */
     body.doom .panel{display:none}
     .doomMsg{
       position:fixed; inset:0;
@@ -299,15 +463,32 @@
       place-items:center;
       text-align:center;
       padding:18px;
-      z-index:5;
+      z-index:45;
       color:#fff;
       text-shadow: 0 2px 20px rgba(0,0,0,.6);
     }
     body.doom .doomMsg{display:grid}
-    .doomMsg h1{margin:0 0 8px; font-size: clamp(30px, 6vw, 64px)}
+    .doomMsg h1{margin:0 0 8px; font-size: clamp(30px, 6vw, 64px); font-weight:800}
     .doomMsg p{margin:0; font-size: clamp(16px, 3vw, 22px); font-weight:700; opacity:.95}
+
+    /* ===== Mobile polish ===== */
+    @media (max-width: 520px){
+      .wrap{padding:14px}
+      .panel{padding:16px 14px 14px; border-radius: 38px 52px 44px 56px}
+      .top{gap:12px}
+      .gifBubble{width:min(230px, 78vw); border-radius: 30px}
+      .choices{gap:10px}
+      .sticker{width: 190px; height: 72px}
+      .no .sticker{width: 150px; height: 64px}
+      .label{font-size: 19px}
+    }
+    @media (max-width: 380px){
+      .sticker{width: 175px; height: 70px}
+      .no .sticker{width: 140px; height: 62px}
+    }
   </style>
 </head>
+
 <body>
   <div class="bg" id="bg"></div>
   <div class="vignette"></div>
@@ -324,21 +505,20 @@
     <section class="panel" aria-live="polite">
       <div class="top">
         <div class="gifBubble" aria-hidden="true">
-          <img id="mainGif" alt="cute romantic gif" referrerpolicy="no-referrer"
+          <img id="mainGif" alt="calm romantic gif" referrerpolicy="no-referrer"
                src="https://media.giphy.com/media/4N1wOi78ZGzSB6H7vK/giphy.gif">
         </div>
 
         <div class="copy">
-          <div class="nameTag">✨ Tasnim Jahan ✨</div>
-          <div class="q" id="question">Will you be my Valentine?</div>
-          <div class="hint" id="hint">Choose wisely 😌</div>
+          <div class="q" id="question">Hey Tasnim Jahan! Will you be my valentine? 💌</div>
+          <div class="hint" id="hint">Tap your destiny 😌</div>
 
-          <div class="choices" id="choices">
+          <div class="choices">
             <button class="choice yes" id="yesBtn" aria-label="Yes">
               <div class="sticker">
                 <div>
                   <div class="label">YES 💖</div>
-                  <small>say it 🥹</small>
+                  <span class="subLabel">cute answer</span>
                 </div>
               </div>
             </button>
@@ -347,7 +527,7 @@
               <div class="sticker">
                 <div>
                   <div class="label">NO 🙃</div>
-                  <small>danger</small>
+                  <span class="subLabel">risky</span>
                 </div>
               </div>
             </button>
@@ -358,10 +538,10 @@
     </section>
   </div>
 
-  <!-- confirm overlay -->
-  <div class="overlay" id="confirmOverlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+  <!-- Are you sure -->
+  <div class="overlay" id="confirmOverlay" role="dialog" aria-modal="true">
     <div class="modal">
-      <h2 id="confirmTitle">Are you sure? 😳</h2>
+      <h2>Are you sure? 😳</h2>
       <p id="confirmText">Like… *really* sure?</p>
       <div class="row">
         <button class="miniBtn alt" id="goBackBtn">Go back 💞</button>
@@ -370,18 +550,37 @@
     </div>
   </div>
 
-  <!-- forever popup -->
-  <div class="overlay" id="foreverOverlay" role="dialog" aria-modal="true" aria-labelledby="foreverTitle">
-    <div class="modal">
-      <h2 id="foreverTitle">S&amp;T Forever 💘</h2>
-      <p>Certified. Sealed. Sparkly. ✨</p>
-      <div class="row">
-        <button class="miniBtn" id="closeForeverBtn">Awww okay 🥰</button>
+  <!-- Heart-shaped S&T Forever popup -->
+  <div class="overlay" id="foreverOverlay" role="dialog" aria-modal="true">
+    <div class="modal heartModal">
+      <div class="heartInner">
+        <div class="heartCard">
+          <h2>
+            <span class="stBig">S&amp;T</span>
+            <span class="stSmall">Forever</span>
+          </h2>
+          <p>Officially certified by the Universe ✨</p>
+          <div class="row">
+            <button class="miniBtn" id="foreverBtn">Forever 💞</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- doom mode -->
+  <!-- Love screen -->
+  <div class="loveScreen" id="loveScreen">
+    <div class="loveCard">
+      <div class="loveGif">
+        <img id="loveGif" alt="anime hug gif" referrerpolicy="no-referrer"
+             src="https://media.giphy.com/media/xTiQyqmEyXRne56vN6/giphy.gif">
+      </div>
+      <div class="loveTitle">I love you 💖</div>
+      <p class="loveSub">Now come here. You owe me a hug. 🫶</p>
+    </div>
+  </div>
+
+  <!-- Doom mode (kept intact) -->
   <div class="doomMsg">
     <div>
       <h1>MISSION FAILED 💥🌍</h1>
@@ -390,12 +589,16 @@
   </div>
 
 <script>
-  // ---- GIF links (swap these if you want different vibes) ----
-  const BG_WINDY   = "https://media.giphy.com/media/KZoFWq3X8t5S1OzDCv/giphy.gif"; // windy trees / calming
-  const BG_SPRING  = "https://media.giphy.com/media/U1iFjsL5EaLgk/giphy.gif";      // spring / blossoms scenery
-  const BG_EXPLODE = "https://media.giphy.com/media/one2t6IVCI8RG/giphy.gif";      // earth exploding
-  const GIF_CUTE   = "https://media.giphy.com/media/4N1wOi78ZGzSB6H7vK/giphy.gif"; // fun + romantic
-  const GIF_EXPLODE= BG_EXPLODE;
+  // ===== GIFS =====
+  const BG_WINDY   = "https://media.giphy.com/media/KZoFWq3X8t5S1OzDCv/giphy.gif";
+  const BG_SPRING  = "https://media.giphy.com/media/U1iFjsL5EaLgk/giphy.gif";      // keep
+  const BG_EXPLODE = "https://media.giphy.com/media/one2t6IVCI8RG/giphy.gif";      // keep
+
+  const GIF_VALENTINE_1 = "https://media.giphy.com/media/4N1wOi78ZGzSB6H7vK/giphy.gif"; // keep
+  const GIF_VALENTINE_2 = "https://media.giphy.com/media/VGACXbkf0AeGs/giphy.gif";      // keep
+
+  // NEW: better anime boy+girl hug (tight hug)
+  const GIF_ILOVEYOU = "https://media.giphy.com/media/xTiQyqmEyXRne56vN6/giphy.gif";
 
   const bgEl = document.getElementById("bg");
   const mainGif = document.getElementById("mainGif");
@@ -412,15 +615,16 @@
   const imSureBtn = document.getElementById("imSureBtn");
 
   const foreverOverlay = document.getElementById("foreverOverlay");
-  const closeForeverBtn = document.getElementById("closeForeverBtn");
+  const foreverBtn = document.getElementById("foreverBtn");
 
-  let stage = 1; // 1 = valentine, 2 = forever, 3 = done
+  const loveGif = document.getElementById("loveGif");
+
+  let stage = 1; // 1=valentine, 2=forever question, 3=popup shown, 4=love screen
   let springTicker = null;
 
   function setBg(url){
     document.documentElement.style.setProperty("--bg", `url("${url}")`);
   }
-
   function rand(min, max){ return Math.random() * (max - min) + min; }
 
   function floatEmoji(emoji, xPct){
@@ -431,13 +635,12 @@
     el.style.bottom = "-40px";
     el.style.fontSize = rand(18, 34) + "px";
     el.style.animationDuration = rand(3.6, 6.6) + "s";
-    el.style.transform = `translateY(12px) rotate(${rand(-18,18)}deg)`;
     floatLayer.appendChild(el);
     el.addEventListener("animationend", () => el.remove());
   }
 
   function burstHearts(){
-    const hearts = ["💖","💘","💕","💗","💞","❤️","✨","😍"];
+    const hearts = ["💖","💘","💕","💗","💞","❤️","✨","😍","🌸"];
     for(let i=0;i<60;i++){
       setTimeout(() => floatEmoji(hearts[Math.floor(Math.random()*hearts.length)]), i*18);
     }
@@ -451,7 +654,6 @@
       floatEmoji(pool[Math.floor(Math.random()*pool.length)]);
     }, 260);
   }
-
   function stopSpring(){
     document.body.classList.remove("spring");
     if (springTicker){
@@ -464,79 +666,66 @@
     confirmText.textContent = text;
     confirmOverlay.classList.add("show");
   }
-  function hideConfirm(){
-    confirmOverlay.classList.remove("show");
-  }
+  function hideConfirm(){ confirmOverlay.classList.remove("show"); }
 
-  function showForeverPopup(){
-    foreverOverlay.classList.add("show");
-  }
-  function hideForeverPopup(){
-    foreverOverlay.classList.remove("show");
-  }
+  function showForeverPopup(){ foreverOverlay.classList.add("show"); }
+  function hideForeverPopup(){ foreverOverlay.classList.remove("show"); }
 
   function goDoom(){
     stopSpring();
     document.body.classList.add("doom");
     setBg(BG_EXPLODE);
-    mainGif.src = GIF_EXPLODE;
-    burstHearts(); // ironic sparkle on the way out 😭
+    mainGif.src = BG_EXPLODE;
+    burstHearts();
   }
 
   function setStage(n){
     stage = n;
+
     if(stage === 1){
       setBg(BG_WINDY);
-      mainGif.src = GIF_CUTE;
-      question.textContent = "Will you be my Valentine?";
-      hint.textContent = "Choose wisely 😌";
+      mainGif.src = GIF_VALENTINE_1;
+      question.textContent = "Hey Tasnim Jahan! Will you be my valentine? 💌";
+      hint.textContent = "Tap your destiny 😌";
       stopSpring();
     }
+
     if(stage === 2){
       setBg(BG_SPRING);
-      question.textContent = "Will you be my Valentine forever?";
-      hint.textContent = "No pressure. (Okay tiny pressure.) 😭💞";
+      mainGif.src = GIF_VALENTINE_2;
+      question.textContent = "Will you be my valentine forever? 💍💞";
+      hint.textContent = "";   // ONLY question (no extra text)
       startSpring();
     }
+
     if(stage === 3){
-      // keep spring + hearts, just celebrate
-      startSpring();
       burstHearts();
       showForeverPopup();
-      // disable buttons
+    }
+
+    if(stage === 4){
+      hideForeverPopup();
+      document.body.classList.add("love");
+      loveGif.src = GIF_ILOVEYOU;
+      burstHearts();
+      startSpring();
       yesBtn.style.pointerEvents = "none";
       noBtn.style.pointerEvents = "none";
-      yesBtn.style.opacity = ".65";
-      noBtn.style.opacity = ".65";
-      hint.textContent = "Locked in 🔒💍";
+      yesBtn.style.opacity = ".6";
+      noBtn.style.opacity = ".6";
     }
   }
 
-  // initial
   setStage(1);
 
   yesBtn.addEventListener("click", () => {
-    if(stage === 1){
-      burstHearts();
-      setStage(2);
-      return;
-    }
-    if(stage === 2){
-      burstHearts();
-      setStage(3);
-      return;
-    }
+    if(stage === 1){ burstHearts(); setStage(2); return; }
+    if(stage === 2){ setStage(3); return; }
   });
 
   noBtn.addEventListener("click", () => {
-    if(stage === 1){
-      showConfirm("Are you sure? 😳 (Windy trees are judging you.)");
-      return;
-    }
-    if(stage === 2){
-      showConfirm("ARE YOU SURE? 😭 Forever is cute though…");
-      return;
-    }
+    if(stage === 1){ showConfirm("Are you sure? 😳 (The windy trees are judging you.)"); return; }
+    if(stage === 2){ showConfirm("ARE YOU SURE? 😭"); return; }
   });
 
   goBackBtn.addEventListener("click", hideConfirm);
@@ -546,9 +735,8 @@
     goDoom();
   });
 
-  closeForeverBtn.addEventListener("click", hideForeverPopup);
+  foreverBtn.addEventListener("click", () => setStage(4));
 
-  // optional: close overlays by clicking outside modal
   confirmOverlay.addEventListener("click", (e) => {
     if(e.target === confirmOverlay) hideConfirm();
   });
