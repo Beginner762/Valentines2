@@ -2,20 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tasnim Jahan — Will you be my Valentine?</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tasnim Jahan — Valentine?</title>
   <style>
     :root{
       --ink:#2a2a2a;
       --card:#ffffffcc;
       --shadow: 0 18px 60px rgba(0,0,0,.12);
+
+      /* Pastel palette (hand-painted vibe) */
       --pink:#ff4d8d;
       --pink2:#ff2d6d;
-      --mint:#66d1b5;
-      --sky:#b9e6ff;
       --lav:#d8c8ff;
-      --peach:#ffd1b8;
+      --sky:#bfe9ff;
+      --peach:#ffd6c2;
       --cream:#fff5e8;
+      --mint:#7ee6c9;
+
+      /* Disaster palette */
       --storm:#0b1020;
       --danger:#ff3b3b;
     }
@@ -30,34 +34,44 @@
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--ink);
       overflow:hidden;
-      background: #fff;
+      background:#fff;
     }
 
-    /* === Scene Backgrounds (hand-painted pastel vibe) === */
+    /* ===== Background Scene Layers ===== */
     .scene{
-      position:fixed;
-      inset:0;
+      position:fixed; inset:0;
       z-index:0;
-      transition: filter .8s ease, transform .8s ease;
+      overflow:hidden;
     }
 
-    .bgBase{
+    /* base pastel sky */
+    .bg{
       position:absolute; inset:0;
       background:
-        radial-gradient(1200px 700px at 18% 18%, rgba(216,200,255,.85), transparent 60%),
-        radial-gradient(1100px 700px at 82% 28%, rgba(185,230,255,.9), transparent 60%),
-        radial-gradient(900px 700px at 50% 90%, rgba(255,209,184,.85), transparent 55%),
+        radial-gradient(1100px 700px at 18% 18%, rgba(216,200,255,.90), transparent 60%),
+        radial-gradient(1100px 700px at 82% 22%, rgba(191,233,255,.90), transparent 60%),
+        radial-gradient(900px 650px at 50% 92%, rgba(255,214,194,.88), transparent 55%),
         linear-gradient(135deg, rgba(255,245,232,1), rgba(255,237,243,1));
-      filter:saturate(1.05) contrast(1.02);
+      filter:saturate(1.06) contrast(1.02);
+      transition: opacity .8s ease, filter .8s ease;
     }
 
-    /* film grain */
+    /* spring-romance background (after Forever Yes) */
+    body.spring .bg{
+      background:
+        radial-gradient(1200px 780px at 16% 18%, rgba(191,233,255,.95), transparent 60%),
+        radial-gradient(1100px 740px at 78% 22%, rgba(216,200,255,.97), transparent 60%),
+        radial-gradient(1000px 760px at 52% 96%, rgba(255,224,245,.95), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,1), rgba(255,245,232,1));
+      filter:saturate(1.10) contrast(1.03);
+    }
+
+    /* subtle film grain */
     .grain{
       position:absolute; inset:-40px;
-      background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
       mix-blend-mode: soft-light;
-      opacity:.35;
+      opacity:.33;
       pointer-events:none;
       animation: grainMove 7s steps(2) infinite;
     }
@@ -69,61 +83,66 @@
       100%{transform:translate(0,0)}
     }
 
-    /* clouds layer */
-    .clouds{
-      position:absolute; inset:0;
-      pointer-events:none;
-      opacity:.9;
-      filter: blur(.2px);
-    }
+    /* clouds */
+    .clouds{position:absolute; inset:0; pointer-events:none; opacity:.9}
     .cloud{
       position:absolute;
-      width: 240px;
-      height: 90px;
+      width: 240px; height: 90px;
       background: rgba(255,255,255,.65);
       border-radius: 100px;
       box-shadow: 0 16px 40px rgba(0,0,0,.06);
       border: 1px solid rgba(255,255,255,.5);
       backdrop-filter: blur(6px);
     }
-    .cloud:before, .cloud:after{
+    .cloud:before,.cloud:after{
       content:"";
       position:absolute;
       background: rgba(255,255,255,.72);
-      width: 110px; height: 110px;
-      border-radius: 50%;
-      top: -55px; left: 35px;
+      width:110px; height:110px;
+      border-radius:50%;
+      top:-55px; left:35px;
     }
     .cloud:after{
-      width: 130px; height: 130px;
-      top: -70px; left: 95px;
+      width:130px; height:130px;
+      top:-70px; left:95px;
       background: rgba(255,255,255,.62);
     }
-
     .c1{ top:12%; left:-18%; transform:scale(1.00); animation: drift1 26s linear infinite; }
     .c2{ top:25%; left:-26%; transform:scale(1.25); animation: drift2 34s linear infinite; opacity:.82;}
     .c3{ top:48%; left:-22%; transform:scale(.95); animation: drift3 29s linear infinite; opacity:.75;}
-    @keyframes drift1{ to{ transform: translateX(140vw) scale(1.00); } }
-    @keyframes drift2{ to{ transform: translateX(150vw) scale(1.25); } }
-    @keyframes drift3{ to{ transform: translateX(145vw) scale(.95); } }
+    @keyframes drift1{ to{ transform: translateX(140vw) scale(1.00);} }
+    @keyframes drift2{ to{ transform: translateX(150vw) scale(1.25);} }
+    @keyframes drift3{ to{ transform: translateX(145vw) scale(.95);} }
 
-    /* floating petals/hearts background particles */
-    .bgParticles{
+    /* Spring-only gentle background hearts/petals */
+    .bgHearts{
       position:absolute; inset:0;
       pointer-events:none;
-      overflow:hidden;
+      opacity:0;
+      transition: opacity .8s ease;
+      z-index:1;
     }
-    .bgP{
+    body.spring .bgHearts{ opacity:1; }
+
+    .bgFloat{
       position:absolute;
-      top:-10vh;
-      opacity:.9;
+      top:-12vh;
+      left:var(--x);
+      font-size:var(--sz);
+      opacity:.85;
       filter: drop-shadow(0 10px 14px rgba(0,0,0,.08));
-      will-change: transform, opacity;
+      animation: bgFall var(--dur) linear forwards;
+      transform: translateX(0) rotate(0deg);
+    }
+    @keyframes bgFall{
+      from{ transform: translate(0,-12vh) rotate(0deg); opacity:.0;}
+      10%{opacity:.85}
+      to{ transform: translate(var(--dx), 112vh) rotate(var(--rot)); opacity:0;}
     }
 
-    /* === Card UI === */
+    /* ===== Card UI ===== */
     .card{
-      width:min(620px, 92vw);
+      width:min(640px, 92vw);
       background:var(--card);
       backdrop-filter: blur(12px);
       border:1px solid rgba(255,255,255,.65);
@@ -134,37 +153,24 @@
       position:relative;
       z-index:2;
     }
-
     .gif{
-      width:230px;
-      height:230px;
+      width:230px; height:230px;
       border-radius:22px;
       overflow:hidden;
       margin:0 auto 14px;
       box-shadow: 0 14px 40px rgba(255,77,141,.18);
       border: 1px solid rgba(255,77,141,.22);
       background:#fff;
-      display:grid;
-      place-items:center;
+      display:grid; place-items:center;
     }
-    .gif img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
+    .gif img{ width:100%; height:100%; object-fit:cover; display:block; }
 
     h1{
       margin:8px 0 10px;
       font-size: clamp(22px, 4.2vw, 34px);
-      letter-spacing:.2px;
       line-height:1.15;
     }
-    .sub{
-      margin:0 0 6px;
-      opacity:.85;
-      font-size:15px;
-    }
+    .sub{ margin:0 0 6px; opacity:.85; font-size:15px; }
 
     .btnRow{
       margin-top:14px;
@@ -173,12 +179,11 @@
       justify-content:center;
       flex-wrap:wrap;
     }
-
     button{
       border:0;
       padding:12px 18px;
       border-radius:999px;
-      font-weight:800;
+      font-weight:850;
       cursor:pointer;
       font-size:16px;
       transition: transform .08s ease, box-shadow .2s ease, background .2s ease, opacity .2s ease;
@@ -186,54 +191,54 @@
       user-select:none;
     }
     button:active{transform: translateY(1px) scale(.99)}
-    button:disabled{opacity:.5; cursor:not-allowed}
 
     .yes{
       background: linear-gradient(135deg, var(--pink), var(--pink2));
       color:white;
     }
-    .yes:hover{box-shadow: 0 16px 38px rgba(255,45,109,.26)}
     .no{
       background:white;
       color:var(--pink2);
       border:1px solid rgba(255,45,109,.25);
     }
-    .no:hover{box-shadow: 0 16px 38px rgba(255,45,109,.12)}
 
     .msg{
       margin-top:12px;
       min-height:36px;
       font-size:18px;
-      font-weight:750;
+      font-weight:800;
     }
-
     .tiny{
       margin-top:10px;
       font-size:12.5px;
-      opacity:.68;
+      opacity:.7;
     }
 
-    /* Foreground shower (Yes celebrations) */
+    /* Foreground celebration shower */
     .float{
       position:fixed;
-      top:-10vh;
-      left:0;
-      will-change: transform, opacity;
-      z-index:3;
+      top:-12vh;
+      left:var(--x);
+      font-size:var(--sz);
+      opacity:.95;
+      z-index:5;
       pointer-events:none;
       filter: drop-shadow(0 8px 14px rgba(0,0,0,.12));
-      font-size:22px;
-      opacity:.95;
+      animation: fall var(--dur) linear forwards;
+    }
+    @keyframes fall{
+      from{ transform: translate(0,-12vh) rotate(0deg); opacity:0;}
+      10%{opacity:.95}
+      to{ transform: translate(var(--dx), 112vh) rotate(var(--rot)); opacity:0;}
     }
 
-    /* Modal */
+    /* ===== Modal ===== */
     .overlay{
-      position:fixed;
-      inset:0;
+      position:fixed; inset:0;
       background: rgba(0,0,0,.34);
       display:none;
       place-items:center;
-      z-index:10;
+      z-index:20;
       padding:16px;
     }
     .modal{
@@ -248,18 +253,25 @@
     .modal p{margin:0 0 14px; opacity:.9}
     .small{font-size:13px; opacity:.75; margin-top:10px}
 
-    /* Disaster mode overlay */
-    .disaster{
+    /* ===== Disaster Mode ===== */
+    .disasterOverlay{
       position:absolute; inset:0;
       background:
-        radial-gradient(900px 650px at 30% 25%, rgba(255,0,76,.20), transparent 55%),
+        radial-gradient(900px 650px at 30% 25%, rgba(255,0,76,.22), transparent 55%),
         radial-gradient(1100px 800px at 75% 35%, rgba(255,153,0,.18), transparent 60%),
         linear-gradient(180deg, rgba(10,10,20,1), rgba(0,0,0,1));
       opacity:0;
       pointer-events:none;
-      transition: opacity .8s ease;
+      transition: opacity .6s ease;
+      z-index:3;
     }
-    .disaster.active{opacity:1;}
+    body.disaster .disasterOverlay{opacity:1;}
+    body.disaster .bg{filter:saturate(0.75) contrast(1.06) brightness(.75);}
+    body.disaster .clouds{opacity:.15}
+    body.disaster .card{
+      border-color: rgba(255,80,80,.35);
+      box-shadow: 0 20px 80px rgba(255,0,0,.14);
+    }
 
     .shake{
       animation: shake .12s infinite;
@@ -274,49 +286,55 @@
 
     .meteor{
       position:fixed;
-      width:180px;
-      height:2px;
+      width:200px; height:2px;
       background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,220,180,.9), rgba(255,120,120,.9));
       border-radius:999px;
       opacity:.9;
-      z-index:4;
+      z-index:30;
       pointer-events:none;
       filter: drop-shadow(0 10px 14px rgba(255,80,80,.25));
+      transform: rotate(215deg);
     }
 
-    .boomText{
-      position:fixed;
-      inset:0;
-      display:grid;
-      place-items:center;
-      z-index:20;
+    /* Explosion flash */
+    .boom{
+      position:fixed; inset:0;
+      display:grid; place-items:center;
+      z-index:40;
       pointer-events:none;
       opacity:0;
-      transition: opacity .6s ease;
-      text-align:center;
-      padding:20px;
+      transition: opacity .3s ease;
     }
-    .boomText.active{opacity:1;}
-    .boomText .inner{
-      background: rgba(0,0,0,.55);
-      color: #fff;
+    .boom.active{opacity:1;}
+    .boom .flash{
+      position:absolute; inset:0;
+      background: radial-gradient(circle at 50% 55%, rgba(255,240,220,1), rgba(255,80,80,.75), rgba(0,0,0,0) 70%);
+      animation: flash 1.2s ease-out forwards;
+      opacity:.9;
+    }
+    @keyframes flash{
+      0%{transform:scale(0.6); opacity:0.0}
+      25%{transform:scale(1.0); opacity:0.95}
+      100%{transform:scale(1.9); opacity:0.0}
+    }
+    .boom .text{
+      position:relative;
+      background: rgba(0,0,0,.58);
+      color:#fff;
       border: 1px solid rgba(255,255,255,.22);
       border-radius: 22px;
       padding: 16px 18px;
       box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      text-align:center;
+      max-width:min(520px, 92vw);
     }
-    .boomText h3{
-      margin: 0 0 6px;
+    .boom h3{
+      margin:0 0 6px;
       font-size: clamp(20px, 4.5vw, 34px);
-      color: #fff;
     }
-    .boomText p{
-      margin:0;
-      opacity:.9;
-      font-size: 15px;
-    }
+    .boom p{ margin:0; opacity:.92; font-size:15px; }
 
-    /* helper badge */
+    /* Music status pill */
     .pill{
       display:inline-flex;
       align-items:center;
@@ -326,7 +344,7 @@
       border:1px solid rgba(255,45,109,.22);
       background: rgba(255,255,255,.7);
       font-size:13px;
-      font-weight:700;
+      font-weight:800;
       opacity:.9;
       margin-top:10px;
     }
@@ -335,543 +353,421 @@
       background: linear-gradient(135deg, var(--mint), var(--pink));
       box-shadow: 0 10px 20px rgba(102,209,181,.25);
     }
-
-    /* Spring romance state (after Forever = Yes) */
-    body.spring .bgBase{
-      background:
-        radial-gradient(1200px 700px at 18% 18%, rgba(185,230,255,.92), transparent 60%),
-        radial-gradient(1100px 700px at 78% 22%, rgba(216,200,255,.95), transparent 60%),
-        radial-gradient(900px 700px at 50% 95%, rgba(255,224,245,.95), transparent 55%),
-        linear-gradient(180deg, rgba(255,255,255,1), rgba(255,245,232,1));
-      filter:saturate(1.08) contrast(1.03);
-    }
-
-    body.disaster .card{
-      border-color: rgba(255,80,80,.3);
-      box-shadow: 0 18px 70px rgba(255,30,30,.14);
-    }
   </style>
 </head>
-<body>
-  <!-- Background scene -->
-  <div class="scene" id="scene">
-    <div class="bgBase"></div>
 
-    <div class="clouds" id="clouds">
+<body>
+  <div class="scene" id="scene">
+    <div class="bg"></div>
+
+    <div class="clouds">
       <div class="cloud c1"></div>
       <div class="cloud c2"></div>
       <div class="cloud c3"></div>
     </div>
 
-    <div class="bgParticles" id="bgParticles"></div>
-
+    <div class="bgHearts" id="bgHearts"></div>
     <div class="grain"></div>
-    <div class="disaster" id="disasterOverlay"></div>
+    <div class="disasterOverlay"></div>
   </div>
 
   <div class="card" id="card">
     <div class="gif">
-      <!-- Replace with any GIF you like -->
-      <img
-        src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif"
-        alt="Cute valentine gif"
-      />
+      <!-- Change this GIF link if you want -->
+      <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="valentine gif" />
     </div>
 
     <h1 id="question">Tasnim Jahan, will you be my Valentine? 💌</h1>
-    <div class="sub" id="subtitle">I promise: premium vibes, zero stress, maximum cute.</div>
+    <div class="sub" id="sub">Soft sky. Soft music. Big feelings. (Cheesy is mandatory.)</div>
 
-    <div class="btnRow" id="mainButtons">
+    <div class="btnRow">
       <button class="yes" id="yesBtn">Yes 💖</button>
       <button class="no" id="noBtn">No 🙈</button>
     </div>
 
-    <div class="btnRow" id="foreverButtons" style="display:none;">
-      <button class="yes" id="foreverYesBtn">Yes, forever 💞</button>
-      <button class="no" id="foreverNoBtn">No 😅</button>
-    </div>
-
     <div class="msg" id="msg"></div>
 
-    <div class="pill" title="Music starts after your first click (browser rules).">
+    <div class="pill" title="Music starts after the first click (browser rules).">
       <span class="dot"></span>
-      <span id="musicStatus">Music: off (click any button to start)</span>
+      <span id="musicStatus">Music: off (click any button)</span>
     </div>
 
-    <div class="tiny">Tip: You can swap the GIF by changing the <code>src</code> link.</div>
+    <div class="tiny">If you don’t see updates after editing on GitHub: do a hard refresh (Ctrl+F5).</div>
   </div>
 
   <!-- Are you sure modal -->
   <div class="overlay" id="overlay">
     <div class="modal">
       <h2>Are you sure? 🥺</h2>
-      <p id="noLine">I’ll be a little sad… like a kitten in the rain.</p>
+      <p id="modalLine">Think again… the universe is watching.</p>
       <div class="btnRow">
-        <button class="yes" id="reconsiderBtn">Okay… YES 💘</button>
-        <button class="no" id="stillNoBtn">Still No 😶</button>
+        <button class="yes" id="modalYes">Okay… YES 💘</button>
+        <button class="no" id="modalNo">Final No 😶</button>
       </div>
-      <div class="small">(Think carefully. Very carefully. The universe is watching.)</div>
+      <div class="small">(Final No may trigger… consequences.)</div>
     </div>
   </div>
 
-  <!-- disaster end screen -->
-  <div class="boomText" id="boomText">
-    <div class="inner">
+  <!-- Explosion / mission failed -->
+  <div class="boom" id="boom">
+    <div class="flash"></div>
+    <div class="text">
       <h3>MISSION FAILED 💥🌍</h3>
-      <p>Earth has exploded. Love initiative terminated. (Try again in a new timeline.)</p>
+      <p>Earth exploded. Love mission aborted. (Try again in a new timeline.)</p>
     </div>
   </div>
 
-  <script>
-    // ======= State =======
-    const state = {
-      phase: "askValentine", // askValentine -> askForever -> springForever -> disaster
-      showerRunning: false,
-      bgParticleLoop: null,
-      audioStarted: false,
-      audioCtx: null,
-      musicNodes: null
-    };
+<script>
+  // ===== DOM =====
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn  = document.getElementById('noBtn');
+  const question = document.getElementById('question');
+  const sub = document.getElementById('sub');
+  const msg = document.getElementById('msg');
 
-    // ======= DOM =======
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const foreverYesBtn = document.getElementById("foreverYesBtn");
-    const foreverNoBtn = document.getElementById("foreverNoBtn");
-    const mainButtons = document.getElementById("mainButtons");
-    const foreverButtons = document.getElementById("foreverButtons");
+  const overlay = document.getElementById('overlay');
+  const modalLine = document.getElementById('modalLine');
+  const modalYes = document.getElementById('modalYes');
+  const modalNo = document.getElementById('modalNo');
 
-    const msg = document.getElementById("msg");
-    const question = document.getElementById("question");
-    const subtitle = document.getElementById("subtitle");
+  const bgHearts = document.getElementById('bgHearts');
+  const scene = document.getElementById('scene');
+  const card = document.getElementById('card');
+  const boom = document.getElementById('boom');
 
-    const overlay = document.getElementById("overlay");
-    const reconsiderBtn = document.getElementById("reconsiderBtn");
-    const stillNoBtn = document.getElementById("stillNoBtn");
-    const noLine = document.getElementById("noLine");
+  const musicStatus = document.getElementById('musicStatus');
 
-    const bgParticles = document.getElementById("bgParticles");
-    const disasterOverlay = document.getElementById("disasterOverlay");
-    const card = document.getElementById("card");
-    const boomText = document.getElementById("boomText");
+  // ===== STATE =====
+  // phase 1 = first question; phase 2 = forever question; phase 3 = spring forever confirmed; phase X = disaster
+  let phase = 1;
+  let modalContextPhase = 1;
 
-    const musicStatus = document.getElementById("musicStatus");
+  // ===== HELPERS =====
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-    // ======= Helpers =======
-    function rand(min, max){ return Math.random() * (max - min) + min; }
-    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  // ===== SUBTLE MUSIC (WebAudio) =====
+  let audioStarted = false;
+  let ctx = null;
+  let master = null;
+  let filter = null;
+  let scheduler = null;
+  let nextNoteTime = 0;
+  let step = 0;
 
-    // ======= Subtle fun music (WebAudio) =======
-    // Starts on first button click to satisfy autoplay rules.
-    function startMusicIfNeeded(){
-      if (state.audioStarted) return;
+  function startMusicIfNeeded(){
+    if (audioStarted) return;
 
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) {
-        musicStatus.textContent = "Music: unavailable (browser doesn’t support)";
-        return;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext){
+      musicStatus.textContent = "Music: unavailable";
+      return;
+    }
+
+    ctx = new AudioContext();
+    master = ctx.createGain();
+    master.gain.value = 0.028; // VERY subtle volume
+    filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 1400;
+
+    filter.connect(master);
+    master.connect(ctx.destination);
+
+    audioStarted = true;
+    musicStatus.textContent = "Music: on (subtle + fun) 🎶";
+
+    const bpm = 96;
+    const beat = 60 / bpm;         // quarter note
+    const eighth = beat / 2;
+
+    const chords = [
+      [220, 277.18, 329.63],   // A
+      [293.66, 369.99, 440.00],// D
+      [329.63, 415.30, 493.88],// E
+      [293.66, 369.99, 440.00] // D
+    ];
+
+    nextNoteTime = ctx.currentTime + 0.05;
+    step = 0;
+
+    function pluck(freq, time, dur, gain){
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(freq, time);
+
+      // envelope
+      g.gain.setValueAtTime(0.00001, time);
+      g.gain.linearRampToValueAtTime(gain, time + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.00001, time + dur);
+
+      o.connect(g);
+      g.connect(filter);
+
+      o.start(time);
+      o.stop(time + dur + 0.05);
+    }
+
+    function pad(freq, time, dur, gain){
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(freq, time);
+
+      g.gain.setValueAtTime(0.00001, time);
+      g.gain.linearRampToValueAtTime(gain, time + 0.05);
+      g.gain.linearRampToValueAtTime(0.00001, time + dur);
+
+      o.connect(g);
+      g.connect(filter);
+
+      o.start(time);
+      o.stop(time + dur + 0.08);
+    }
+
+    function scheduleStep(t){
+      const barSteps = 16; // 2 bars of eighth-notes-ish feel
+      const chordIndex = Math.floor(step / barSteps) % chords.length;
+      const chord = chords[chordIndex];
+
+      // light pad each bar start
+      if (step % barSteps === 0){
+        pad(chord[0], t, beat*2.1, 0.012);
+        pad(chord[1], t, beat*2.1, 0.008);
+        pad(chord[2], t, beat*2.1, 0.008);
       }
 
-      const ctx = new AudioContext();
-      state.audioCtx = ctx;
+      // playful melody: pick chord tones + a sparkle
+      const pattern = [0,2,1,2, 0,1,2,1, 0,2,1,2, 0,1,2,3];
+      const p = pattern[step % pattern.length];
+      let note = chord[p % 3] * (p === 3 ? 2 : 1);
+      if (step % 8 === 7) note = chord[2] * 2;
 
-      const master = ctx.createGain();
-      master.gain.value = 0.035; // VERY subtle
-      master.connect(ctx.destination);
+      // pluck every eighth-note
+      pluck(note, t, 0.18, 0.018);
 
-      // a tiny “toy” chord pad (soft triangle)
-      const pad = ctx.createOscillator();
-      pad.type = "triangle";
-      const padGain = ctx.createGain();
-      padGain.gain.value = 0.0;
-
-      // a gentle “plucky” sine for melody
-      const lead = ctx.createOscillator();
-      lead.type = "sine";
-      const leadGain = ctx.createGain();
-      leadGain.gain.value = 0.0;
-
-      // soft filter to warm it up
-      const filter = ctx.createBiquadFilter();
-      filter.type = "lowpass";
-      filter.frequency.value = 1200;
-
-      pad.connect(filter);
-      lead.connect(filter);
-      filter.connect(master);
-
-      pad.start();
-      lead.start();
-
-      // Schedule a simple, cute motif
-      const tempo = 92; // bpm
-      const beat = 60 / tempo;
-
-      // Chords (A major-ish feel): A, D, E, D
-      const chords = [
-        [220, 277.18, 329.63], // A
-        [293.66, 369.99, 440], // D
-        [329.63, 415.30, 493.88], // E
-        [293.66, 369.99, 440]  // D
-      ];
-
-      // Melody notes (Hz) simple and playful
-      const melody = [440, 493.88, 523.25, 493.88, 440, 392, 440, 0];
-
-      function ramp(g, to, t){
-        g.gain.cancelScheduledValues(t);
-        g.gain.setValueAtTime(g.gain.value, t);
-        g.gain.linearRampToValueAtTime(to, t + 0.03);
+      // tiny bass on beats
+      if (step % 4 === 0){
+        pluck(chord[0]/2, t, 0.22, 0.012);
       }
 
-      let t0 = ctx.currentTime + 0.05;
+      step++;
+    }
 
-      function loop(){
-        // Pad: fake chord by cycling frequencies quickly
-        const chord = chords[Math.floor((t0/ (beat*4)) ) % chords.length];
-
-        // Pad swell
-        ramp(padGain, 0.018, t0);
-        padGain.gain.linearRampToValueAtTime(0.010, t0 + beat*2);
-        padGain.gain.linearRampToValueAtTime(0.000, t0 + beat*4 - 0.02);
-
-        // attach gains
-        pad.disconnect();
-        pad.connect(padGain);
-        padGain.connect(filter);
-
-        // arpeggiate chord within 4 beats
-        for (let i=0;i<12;i++){
-          const tt = t0 + (i * (beat*4/12));
-          const f = chord[i % chord.length] * (i % 2 === 0 ? 1 : 2);
-          pad.frequency.setValueAtTime(f, tt);
-        }
-
-        // Lead melody: tiny plucks each beat
-        lead.disconnect();
-        lead.connect(leadGain);
-        leadGain.connect(filter);
-
-        for (let i=0;i<8;i++){
-          const tt = t0 + i*beat;
-          const note = melody[i];
-          if (note === 0) continue;
-          lead.frequency.setValueAtTime(note, tt);
-
-          // pluck envelope
-          leadGain.gain.setValueAtTime(0.0, tt);
-          leadGain.gain.linearRampToValueAtTime(0.020, tt + 0.02);
-          leadGain.gain.linearRampToValueAtTime(0.000, tt + 0.18);
-        }
-
-        t0 += beat*8;
-
-        // keep scheduling ahead
-        if (state.audioStarted) {
-          state.musicNodes.loopTimer = setTimeout(loop, beat*8*1000 * 0.85);
-        }
+    // scheduler: keep ~0.2s ahead
+    scheduler = setInterval(() => {
+      while (nextNoteTime < ctx.currentTime + 0.2){
+        scheduleStep(nextNoteTime);
+        nextNoteTime += eighth;
       }
+    }, 25);
+  }
 
-      state.musicNodes = { master, filter, pad, padGain, lead, leadGain, loopTimer:null };
-      state.audioStarted = true;
-      musicStatus.textContent = "Music: on (subtle + fun) 🎶";
+  function stopMusic(){
+    try{
+      if (scheduler) clearInterval(scheduler);
+      scheduler = null;
+      if (ctx) ctx.close();
+    }catch(e){}
+    audioStarted = false;
+    musicStatus.textContent = "Music: off";
+  }
 
-      // start loop
-      loop();
+  // ===== FOREGROUND SHOWER =====
+  function shower(count=120){
+    const chars = ["💖","💘","💕","💝","❤️","😍","🥰","✨","😘","💞","🌸","🫶"];
+    for (let i=0;i<count;i++){
+      setTimeout(()=>spawnFloat(pick(chars)), i*22);
     }
+  }
 
-    function stopMusicHard(){
-      try{
-        if (state.musicNodes?.loopTimer) clearTimeout(state.musicNodes.loopTimer);
-        if (state.audioCtx){
-          state.audioCtx.close();
-        }
-      }catch(e){}
-      state.audioStarted = false;
-      musicStatus.textContent = "Music: off";
-    }
+  function spawnFloat(ch){
+    const el = document.createElement("div");
+    el.className = "float";
+    el.textContent = ch;
 
-    // ======= Foreground celebration shower =======
-    function startShower(intensity = 120, durationMs = 6000) {
-      if (state.showerRunning) return;
-      state.showerRunning = true;
+    el.style.setProperty("--x", rand(0,100) + "vw");
+    el.style.setProperty("--dx", rand(-18,18) + "vw");
+    el.style.setProperty("--dur", rand(2600,5200) + "ms");
+    el.style.setProperty("--rot", rand(-200,200) + "deg");
+    el.style.setProperty("--sz", rand(18,34) + "px");
 
-      const emojis = ["💖","💘","💕","💝","❤️","😍","🥰","✨","😘","💞","🌸","🫶"];
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 5600);
+  }
 
-      // burst
-      for (let i = 0; i < intensity; i++) {
-        setTimeout(() => spawnFloat(pick(emojis)), i * 32);
+  // ===== SPRING BACKGROUND HEARTS =====
+  let bgLoop = null;
+  function startSpringHearts(){
+    if (bgLoop) return;
+    const chars = ["💗","💕","✨","🌸","💞","🫶"];
+    bgLoop = setInterval(() => {
+      for (let i=0;i<3;i++){
+        const el = document.createElement("div");
+        el.className = "bgFloat";
+        el.textContent = pick(chars);
+        el.style.setProperty("--x", rand(-5,105) + "vw");
+        el.style.setProperty("--dx", rand(-10,10) + "vw");
+        el.style.setProperty("--dur", rand(7000,12000) + "ms");
+        el.style.setProperty("--rot", rand(-140,140) + "deg");
+        el.style.setProperty("--sz", rand(14,24) + "px");
+        bgHearts.appendChild(el);
+        setTimeout(()=>el.remove(), 12500);
       }
+    }, 520);
+  }
 
-      // gentle stream
-      const interval = setInterval(() => {
-        for (let i = 0; i < 6; i++) spawnFloat(pick(emojis), true);
-      }, 260);
+  function stopSpringHearts(){
+    if (bgLoop) clearInterval(bgLoop);
+    bgLoop = null;
+    bgHearts.innerHTML = "";
+  }
 
-      setTimeout(() => clearInterval(interval), durationMs);
-      setTimeout(() => (state.showerRunning = false), durationMs + 350);
+  // ===== MODAL =====
+  function openAreYouSure(){
+    overlay.style.display = "grid";
+    modalContextPhase = phase;
+
+    // line changes slightly depending on which question they rejected
+    if (phase === 1){
+      modalLine.textContent = "Are you sure? 🥺 This could be the cutest YES of your life.";
+    } else if (phase === 2){
+      modalLine.textContent = "Are you sure? 🥺 Forever is a big word… but we can make it cute.";
+    } else {
+      modalLine.textContent = "Are you sure? 🥺";
     }
+  }
+  function closeModal(){ overlay.style.display = "none"; }
 
-    function spawnFloat(char, softer=false) {
-      const el = document.createElement("div");
-      el.className = "float";
-      el.textContent = char;
+  // ===== DISASTER MODE =====
+  function meteor(){
+    const m = document.createElement("div");
+    m.className = "meteor";
+    m.style.left = rand(10,110) + "vw";
+    m.style.top  = rand(-10,45) + "vh";
+    document.body.appendChild(m);
 
-      const startX = Math.random() * 100; // vw
-      const size = rand(18, softer ? 26 : 34);
-      el.style.left = startX + "vw";
-      el.style.fontSize = size + "px";
-      document.body.appendChild(el);
+    const duration = rand(650, 1100);
+    const start = performance.now();
 
-      const drift = rand(-16, 16);
-      const duration = rand(2400, 5200);
-      const rotate = rand(-180, 180);
-
-      const startY = -12;
-      const endY = 112;
-      const start = performance.now();
-
-      function tick(now) {
-        const t = Math.min(1, (now - start) / duration);
-        const ease = 1 - Math.pow(1 - t, 3);
-
-        const x = startX + drift * ease;
-        const y = startY + (endY - startY) * ease;
-        const r = rotate * ease;
-
-        el.style.transform = `translate(${x}vw, ${y}vh) rotate(${r}deg)`;
-        el.style.opacity = String(1 - t * 0.9);
-
-        if (t < 1) requestAnimationFrame(tick);
-        else el.remove();
-      }
-
-      requestAnimationFrame(tick);
+    function tick(now){
+      const t = Math.min(1, (now-start)/duration);
+      const x = parseFloat(m.style.left) - 55*t;
+      const y = parseFloat(m.style.top) + 55*t;
+      m.style.left = x + "vw";
+      m.style.top  = y + "vh";
+      m.style.opacity = String(1-t);
+      if (t<1) requestAnimationFrame(tick);
+      else m.remove();
     }
+    requestAnimationFrame(tick);
+  }
 
-    // ======= Background particle drizzle (spring mode) =======
-    function startBgParticles(){
-      if (state.bgParticleLoop) return;
+  function triggerDisaster(){
+    phase = 99;
+    document.body.classList.add("disaster");
+    stopSpringHearts();
 
-      const chars = ["💗","💕","✨","🌸","💞","🫶"];
-      state.bgParticleLoop = setInterval(() => {
-        // spawn a few per cycle
-        for (let i=0;i<3;i++){
-          const el = document.createElement("div");
-          el.className = "bgP";
-          el.textContent = pick(chars);
+    msg.textContent = "Catastrophic heartbreak protocol initiated 💔";
+    msg.style.color = "var(--danger)";
+    sub.textContent = "Calamity approaching...";
 
-          const startX = rand(-5, 105);
-          const size = rand(14, 24);
-          el.style.left = startX + "vw";
-          el.style.fontSize = size + "px";
+    // shake
+    card.classList.add("shake");
+    scene.classList.add("shake");
 
-          bgParticles.appendChild(el);
+    // meteors
+    const storm = setInterval(meteor, 160);
 
-          const drift = rand(-10, 10);
-          const duration = rand(7000, 12000);
-          const rot = rand(-120, 120);
-          const start = performance.now();
+    // explosion + mission failed
+    setTimeout(() => {
+      clearInterval(storm);
+      card.classList.remove("shake");
+      scene.classList.remove("shake");
+      boom.classList.add("active");
+      shower(80);
+    }, 1800);
 
-          function tick(now){
-            const t = Math.min(1, (now - start) / duration);
-            const ease = 1 - Math.pow(1 - t, 2);
+    // optional: stop music when disaster hits
+    setTimeout(() => stopMusic(), 2200);
+  }
 
-            const x = startX + drift * ease;
-            const y = (-12) + (125) * ease;
+  // ===== FLOW =====
+  function goToForeverQuestion(){
+    phase = 2;
+    question.textContent = "Will you be my Valentine forever? 💍💞";
+    sub.textContent = "No pressure. Only cute vibes and snacks. 🍫";
+    msg.textContent = "YAYYY!! 💖😍 You said YES!";
+    msg.style.color = "var(--pink2)";
+    shower(150);
+  }
 
-            el.style.transform = `translate(${x}vw, ${y}vh) rotate(${rot*ease}deg)`;
-            el.style.opacity = String(0.85 - t * 0.75);
+  function enterSpringForever(){
+    phase = 3;
+    document.body.classList.add("spring");
+    question.textContent = "Forever Love Mode: ON 🌸💖";
+    sub.textContent = "Spring weather, drifting clouds, and love all around.";
+    msg.textContent = "Tasnim Jahan, you just upgraded my whole universe 🫶✨";
+    msg.style.color = "var(--pink2)";
+    startSpringHearts();
+    shower(180);
 
-            if (t < 1) requestAnimationFrame(tick);
-            else el.remove();
-          }
+    // make buttons extra cheesy after success
+    yesBtn.textContent = "YES (already!) 💞";
+    noBtn.textContent  = "No (disabled 😌)";
+    noBtn.disabled = true;
+    yesBtn.disabled = true;
+  }
 
-          requestAnimationFrame(tick);
-        }
-      }, 520);
+  // ===== EVENTS =====
+  yesBtn.addEventListener("click", () => {
+    startMusicIfNeeded();
+
+    if (phase === 1){
+      // first YES -> shower then ask forever
+      msg.textContent = "AWW YESSS 💖✨";
+      msg.style.color = "var(--pink2)";
+      shower(120);
+      setTimeout(goToForeverQuestion, 800);
+    } else if (phase === 2){
+      // second YES -> spring romance mode
+      enterSpringForever();
     }
+  });
 
-    function stopBgParticles(){
-      if (state.bgParticleLoop){
-        clearInterval(state.bgParticleLoop);
-        state.bgParticleLoop = null;
-      }
-      bgParticles.innerHTML = "";
+  noBtn.addEventListener("click", () => {
+    startMusicIfNeeded();
+    if (phase === 99) return;
+    openAreYouSure();
+  });
+
+  modalYes.addEventListener("click", () => {
+    startMusicIfNeeded();
+    closeModal();
+
+    // reconsider YES depends on what they said no to
+    if (modalContextPhase === 1){
+      msg.textContent = "GOOD CHOICE 😌💘";
+      msg.style.color = "var(--pink2)";
+      shower(120);
+      setTimeout(goToForeverQuestion, 700);
+    } else if (modalContextPhase === 2){
+      msg.textContent = "OKAYYY FOREVER IT IS 💍💞";
+      msg.style.color = "var(--pink2)";
+      enterSpringForever();
     }
+  });
 
-    // ======= Disaster mode effects =======
-    function spawnMeteor(){
-      const m = document.createElement("div");
-      m.className = "meteor";
-      const startX = rand(10, 110);
-      const startY = rand(-10, 40);
-      m.style.left = startX + "vw";
-      m.style.top = startY + "vh";
-      m.style.transform = "rotate(215deg)";
-      document.body.appendChild(m);
+  modalNo.addEventListener("click", () => {
+    startMusicIfNeeded();
+    closeModal();
+    triggerDisaster();
+  });
 
-      const duration = rand(600, 1100);
-      const start = performance.now();
-
-      function tick(now){
-        const t = Math.min(1, (now - start) / duration);
-        const x = startX - 55 * t;
-        const y = startY + 55 * t;
-        m.style.left = x + "vw";
-        m.style.top = y + "vh";
-        m.style.opacity = String(1 - t);
-        if (t < 1) requestAnimationFrame(tick);
-        else m.remove();
-      }
-      requestAnimationFrame(tick);
-    }
-
-    function triggerDisaster(){
-      state.phase = "disaster";
-      document.body.classList.add("disaster");
-      disasterOverlay.classList.add("active");
-      stopBgParticles();
-
-      msg.textContent = "…okay. initiating catastrophic heartbreak protocol 💔";
-      msg.style.color = "var(--danger)";
-      subtitle.textContent = "This is not a drill.";
-
-      // shake everything
-      card.classList.add("shake");
-      document.getElementById("scene").classList.add("shake");
-
-      // meteors
-      const meteorStorm = setInterval(spawnMeteor, 180);
-
-      // crescendo visuals then BOOM
-      setTimeout(() => {
-        clearInterval(meteorStorm);
-
-        // final boom: stop shaking
-        card.classList.remove("shake");
-        document.getElementById("scene").classList.remove("shake");
-
-        boomText.classList.add("active");
-        startShower(80, 2500); // chaotic shower
-        setTimeout(() => boomText.classList.remove("active"), 5200);
-      }, 2600);
-    }
-
-    // ======= Flow controls =======
-    function showForeverQuestion(){
-      state.phase = "askForever";
-      mainButtons.style.display = "none";
-      foreverButtons.style.display = "flex";
-
-      question.textContent = "Okay then… will you be my Valentine forever? 💍💞";
-      subtitle.textContent = "No pressure. (Only a tiny, adorable amount.)";
-      msg.textContent = "You said YES!! 😭💖 I’m officially smiling like an idiot.";
-      msg.style.color = "#ff2d6d";
-
-      startShower(140, 5200);
-    }
-
-    function enterSpringForever(){
-      state.phase = "springForever";
-      document.body.classList.add("spring");
-      question.textContent = "It’s official: love mode activated 🌸💖";
-      subtitle.textContent = "Spring romance, soft skies, and too much cute to handle.";
-      msg.textContent = "Tasnim Jahan, you just upgraded my whole universe 🫶✨";
-      msg.style.color = "#ff2d6d";
-
-      startBgParticles();
-      startShower(160, 6500);
-
-      // keep forever buttons but disable them
-      foreverYesBtn.disabled = true;
-      foreverNoBtn.disabled = true;
-    }
-
-    function openNoModal(firstNo=true){
-      overlay.style.display = "grid";
-      if (firstNo){
-        noLine.textContent = "Are you sure? 🥺 I’ll be a little sad… like a kitten in the rain.";
-      } else {
-        noLine.textContent = "Final answer? This may trigger… consequences. 😶";
-      }
-    }
-
-    // ======= Button handlers =======
-    function onAnyClickStartAudio(){
-      startMusicIfNeeded();
-    }
-
-    yesBtn.addEventListener("click", () => {
-      onAnyClickStartAudio();
-      overlay.style.display = "none";
-
-      // First yes -> ask forever
-      if (state.phase === "askValentine"){
-        showForeverQuestion();
-      }
-    });
-
-    noBtn.addEventListener("click", () => {
-      onAnyClickStartAudio();
-      openNoModal(true);
-    });
-
-    reconsiderBtn.addEventListener("click", () => {
-      onAnyClickStartAudio();
-      overlay.style.display = "none";
-
-      // reconsider -> treat as YES for current phase
-      if (state.phase === "askValentine"){
-        showForeverQuestion();
-      } else if (state.phase === "askForever"){
-        enterSpringForever();
-      }
-    });
-
-    stillNoBtn.addEventListener("click", () => {
-      onAnyClickStartAudio();
-      overlay.style.display = "none";
-
-      // If they say "Still No" from first prompt -> set phase to askForever? no: keep it, but escalate next time
-      msg.textContent = "Okay… I’ll ask again. Gently. With snacks. 😔🍫";
-      msg.style.color = "#444";
-      subtitle.textContent = "I respect your decision (but my heart is doing push-ups).";
-    });
-
-    foreverYesBtn.addEventListener("click", () => {
-      onAnyClickStartAudio();
-      overlay.style.display = "none";
-      if (state.phase === "askForever"){
-        enterSpringForever();
-      }
-    });
-
-    foreverNoBtn.addEventListener("click", () => {
-      onAnyClickStartAudio();
-      // Forever question NO -> are you sure (final)
-      openNoModal(false);
-
-      // Modify modal buttons meaning for final no:
-      reconsiderBtn.textContent = "Okay… YES, forever 💘";
-      stillNoBtn.textContent = "Final No 😶";
-
-      // One-time override: if stillNo clicked after this, disaster.
-      const handler = () => {
-        stillNoBtn.removeEventListener("click", handler, true);
-        // disaster on final no
-        triggerDisaster();
-      };
-      stillNoBtn.addEventListener("click", handler, true);
-    });
-
-    // Close modal when clicking outside
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) overlay.style.display = "none";
-    });
-
-    // Start gentle background particles in normal mode? keep off for clean look.
-    // (Spring mode starts them.)
-  </script>
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeModal();
+  });
+</script>
 </body>
 </html>
